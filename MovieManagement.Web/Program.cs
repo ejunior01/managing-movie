@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MovieManagement.Web.Endpoints;
 using MovieManagement.Web.Persistence;
+using MovieManagement.Web.Services;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,7 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
     options.UseNpgsql(connectionString);
 });
 
+builder.Services.AddTransient<IMovieService, MovieService>();
 
 var app = builder.Build();
 
@@ -28,6 +31,6 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.MapGet("/", () => "Hello World!").Produces(200, typeof(string));
+app.MapMovieEndpoints();
 
 app.Run();
