@@ -19,6 +19,11 @@ Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e
 - Atualizar um filme: Atualiza as informações de um filme existente especificando seu ID e os novos detalhes.
 - Deletar um filme: Remove um filme do banco de dados usando seu ID.
 
+### Novas funcionalidades
+- [ ] Logging
+- [ ] Validação de entrada de dados
+- [ ] Paginação, classificação e filtragem
+
 ### Tecnologias e Bibliotecas utilizadas
 - ASP.NET Core 9: Framework para construção de aplicações web modernas.
 - Entity Framework Core: ORM para interações eficientes com o banco de dados.
