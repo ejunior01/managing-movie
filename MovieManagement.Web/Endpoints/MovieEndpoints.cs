@@ -1,5 +1,9 @@
-﻿using MovieManagement.Web.DTOs;
-using MovieManagement.Web.Services;
+﻿using MediatR;
+using MovieManagement.Web.Features.Movies.Commands.Create;
+using MovieManagement.Web.Features.Movies.Commands.Delete;
+using MovieManagement.Web.Features.Movies.Commands.Update;
+using MovieManagement.Web.Features.Movies.Queries.Get;
+using MovieManagement.Web.Features.Movies.Queries.List;
 
 namespace MovieManagement.Web.Endpoints;
 
@@ -9,36 +13,51 @@ public static class MovieEndpoints
     {
         var movieApi = routes.MapGroup("/api/movies").WithTags("Movies");
 
-        movieApi.MapPost("/", async (IMovieService service, CreateMovieDto command) =>
+        movieApi.MapPost("/", async (CreateMovieCommand command, ISender sender) =>
         {
-            var movie = await service.CreateMovieAsync(command);
+            var movie = await sender.Send(command);
             return TypedResults.Created($"/api/movies/{movie.Id}", movie);
         });
 
-        movieApi.MapGet("/", async (IMovieService service) =>
+        movieApi.MapGet("/", async (ISender sender) =>
         {
-            var movies = await service.GetAllMoviesAsync();
+            var movies = await sender.Send(new ListMoviesQuery());
             return TypedResults.Ok(movies);
         });
 
-        movieApi.MapGet("/{id}", async (IMovieService service, Guid id) =>
+        movieApi.MapGet("/{id}", async (Guid id, ISender sender) =>
         {
-            var movie = await service.GetMovieByIdAsync(id);
+            var movie = await sender.Send(new GetMovieQuery(id));
 
             return movie is null
                 ? (IResult)TypedResults.NotFound(new { Message = $"Movie with ID {id} not found." })
                 : TypedResults.Ok(movie);
         });
 
-        movieApi.MapPut("/{id}", async (IMovieService service, Guid id, UpdateMovieDto command) =>
+        movieApi.MapPut("/{id}", async (Guid id, UpdateMovieRequest request, ISender sender) =>
         {
-            await service.UpdateMovieAsync(id, command);
-            return TypedResults.NoContent();
+
+            var command = new UpdateMovieCommand(id,
+                                                request.Title,
+                                                request.Genre,
+                                                request.ReleaseDate,
+                                                request.Rating);
+
+            try
+            {
+                await sender.Send(command);
+                return TypedResults.NoContent();
+            }
+            catch (ArgumentNullException)
+            {
+                return (IResult)TypedResults.NotFound(new { Message = $"Movie with ID {id} not found." });
+            }
+
         });
 
-        movieApi.MapDelete("/{id}", async (IMovieService service, Guid id) =>
+        movieApi.MapDelete("/{id}", async (Guid id, ISender sender) =>
         {
-            await service.DeleteMovieAsync(id);
+            await sender.Send(new DeleteMovieCommand(id));
             return TypedResults.NoContent();
         });
     }

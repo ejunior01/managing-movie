@@ -1,19 +1,28 @@
 using Microsoft.EntityFrameworkCore;
 using MovieManagement.Web.Endpoints;
 using MovieManagement.Web.Persistence;
-using MovieManagement.Web.Services;
 using Scalar.AspNetCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
+//builder.Services.AddDbContext<MovieDbContext>(options =>
+//{
+//    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//    options.UseNpgsql(connectionString);
+//});
+
 builder.Services.AddDbContext<MovieDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseNpgsql(connectionString);
+    options.UseInMemoryDatabase("MoveDatabase");
 });
 
-builder.Services.AddTransient<IMovieService, MovieService>();
+builder.Services.AddMediatR(options =>
+{
+    options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+});
+
 
 var app = builder.Build();
 
@@ -23,7 +32,6 @@ var app = builder.Build();
 // {
 //     await dbContext.Database.EnsureCreatedAsync();
 // }
-
 
 if (app.Environment.IsDevelopment())
 {
