@@ -4,6 +4,7 @@ using MovieManagement.Web.Features.Movies.Commands.Delete;
 using MovieManagement.Web.Features.Movies.Commands.Update;
 using MovieManagement.Web.Features.Movies.Queries.Get;
 using MovieManagement.Web.Features.Movies.Queries.List;
+using MovieManagement.Web.Notifications;
 
 namespace MovieManagement.Web.Endpoints;
 
@@ -13,9 +14,11 @@ public static class MovieEndpoints
     {
         var movieApi = routes.MapGroup("/api/movies").WithTags("Movies");
 
-        movieApi.MapPost("/", async (CreateMovieCommand command, ISender sender) =>
+        movieApi.MapPost("/", async (CreateMovieCommand command, IMediator mediatr) =>
         {
-            var movie = await sender.Send(command);
+            var movie = await mediatr.Send(command);
+            await mediatr.Publish(new MovieCreatedNotification(movie.Id));
+
             return TypedResults.Created($"/api/movies/{movie.Id}", movie);
         });
 
