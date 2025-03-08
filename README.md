@@ -35,6 +35,7 @@ Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e
 - Minimal APIs - Implementação enxuta e performática para APIs.
 - Serilog - Biblioteca de logging para armazenamento em arquivos, console e outros destinos.
 - MediatR - Implementação do padrão Mediator para melhor organização de responsabilidades.
+- FluentValidation - Biblioteca .NET para validação de modelos, permitindo regras de validação expressivas e reutilizáveis.
 
 
 
