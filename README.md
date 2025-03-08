@@ -12,26 +12,29 @@
 
 Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e Entity Framework Core, seguindo práticas recomendadas de Design Orientado a Domínio (DDD) e Clean Code. A aplicação realiza operações CRUD (Criar, Ler, Atualizar, Deletar) para gerenciar detalhes de filmes. Utilizando os conceitos abordados no site: [codewithmukesh.com](https://codewithmukesh.com/blog/aspnet-core-webapi-crud-with-entity-framework-core-full-course/#what-we-will-build).
 
-### Funcionalidades
-- Criar um novo filme: Adiciona um novo filme fornecendo detalhes como título, diretor, data de lançamento e gênero.
-- Obter um filme por ID: Recupera os detalhes de um filme específico usando seu identificador único.
-- Listar todos os filmes: Lista todos os filmes cadastrados.
-- Atualizar um filme: Atualiza as informações de um filme existente especificando seu ID e os novos detalhes.
-- Deletar um filme: Remove um filme do banco de dados usando seu ID.
+### Features
+   - Filme
+      - Criar um novo filme: Adiciona um novo filme fornecendo detalhes como título, diretor, data de lançamento e gênero.
+      - Obter um filme por ID: Recupera os detalhes de um filme específico usando seu identificador único.
+      - Listar todos os filmes: Lista todos os filmes cadastrados.
+      - Atualizar um filme: Atualiza as informações de um filme existente especificando seu ID e os novos detalhes.
+      - Deletar um filme: Remove um filme do banco de dados usando seu ID.
 
-### Novas funcionalidades
-- [ ] Logging
+### Novas funcionalidades e melhorias
+- [x] Logging
 - [ ] Validação de entrada de dados
 - [ ] Paginação, classificação e filtragem
+- [x] CQRS
 
 ### Tecnologias e Bibliotecas utilizadas
-- ASP.NET Core 9: Framework para construção de aplicações web modernas.
+- ASP.NET Core 9: Framework moderno para desenvolvimento de aplicações web.
 - Entity Framework Core: ORM para interações eficientes com o banco de dados.
 - PostgreSQL: Banco de dados relacional utilizado na aplicação.
 - Docker: Utilizado para containerizar o banco de dados PostgreSQL.
 - OpenAPI com Scalar: Geração e exploração de documentação da API.
-- Design Orientado a Domínio (DDD): Práticas para um design de software mais eficaz.
-- Minimal APIs: Construção de APIs leves e performáticas com mínima boilerplate.
+- Minimal APIs - Implementação enxuta e performática para APIs.
+- Serilog - Biblioteca de logging para armazenamento em arquivos, console e outros destinos.
+- MediatR - Implementação do padrão Mediator para melhor organização de responsabilidades.
 
 
 
