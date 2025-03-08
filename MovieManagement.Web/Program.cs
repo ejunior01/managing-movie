@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieManagement.Web.Endpoints;
 using MovieManagement.Web.Persistence;
 using Scalar.AspNetCore;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,12 @@ builder.Services.AddMediatR(options =>
     options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+{
+    loggerConfiguration.WriteTo.Console();
+    loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+});
+
 
 var app = builder.Build();
 
@@ -40,5 +47,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapMovieEndpoints();
-
+app.UseSerilogRequestLogging();
 app.Run();
