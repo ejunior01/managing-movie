@@ -22,7 +22,7 @@ Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e
 
 ### Novas funcionalidades e melhorias
 - [x] Logging
-- [ ] Validação de entrada de dados
+- [x] Validação de entrada de dados
 - [ ] Paginação, classificação e filtragem
 - [x] CQRS
 
