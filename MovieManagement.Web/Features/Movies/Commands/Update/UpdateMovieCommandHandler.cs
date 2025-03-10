@@ -1,13 +1,16 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MovieManagement.Domain.Core.Errors;
+using MovieManagement.Domain.Core.Primitives;
+using MovieManagement.Web.Features.Movies.DTOs;
 using MovieManagement.Web.Persistence;
 
 namespace MovieManagement.Web.Features.Movies.Commands.Update;
 
-public sealed class UpdateMovieCommandHandler(ILogger<UpdateMovieCommandHandler> logger,MovieDbContext dbContext) :
-    IRequestHandler<UpdateMovieCommand>
+public sealed class UpdateMovieCommandHandler(MovieDbContext dbContext) :
+    IRequestHandler<UpdateMovieCommand,Result>
 {
-    public async Task Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
     {
         var movieToUpdate = await dbContext
                                     .Movies
@@ -16,12 +19,13 @@ public sealed class UpdateMovieCommandHandler(ILogger<UpdateMovieCommandHandler>
 
         if (movieToUpdate is null)
         {
-            logger.LogError("Invalid Movie Id: {id}.", command.Id);
-            throw new ArgumentNullException($"Invalid Movie Id: {command.Id}.");
+            return Result.Failure<MovieDto>(DomainErrors.Movie.NotFound);
         }
 
         movieToUpdate.Update(command.Title, command.Genre, command.ReleaseDate, command.Rating);
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Result.Success();
     }
 }

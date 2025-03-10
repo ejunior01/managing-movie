@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MovieManagement.Web.Models;
+using MovieManagement.Domain.Core;
 
 namespace MovieManagement.Web.Persistence.Configurations;
 

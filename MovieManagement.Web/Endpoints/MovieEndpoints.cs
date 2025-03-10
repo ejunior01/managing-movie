@@ -16,25 +16,26 @@ public static class MovieEndpoints
 
         movieApi.MapPost("/", async (CreateMovieCommand command, IMediator mediatr) =>
         {
-            var movie = await mediatr.Send(command);
-            await mediatr.Publish(new MovieCreatedNotification(movie.Id));
+            var result = await mediatr.Send(command);
 
-            return TypedResults.Created($"/api/movies/{movie.Id}", movie);
+            await mediatr.Publish(new MovieCreatedNotification(result.Value.Id));
+
+            return TypedResults.Created($"/api/movies/{result.Value.Id}", result.Value);
         });
 
         movieApi.MapGet("/", async (ISender sender) =>
         {
-            var movies = await sender.Send(new ListMoviesQuery());
-            return TypedResults.Ok(movies);
+            var result = await sender.Send(new ListMoviesQuery());
+            return TypedResults.Ok(result.Value);
         });
 
         movieApi.MapGet("/{id}", async (Guid id, ISender sender) =>
         {
-            var movie = await sender.Send(new GetMovieQuery(id));
+            var result = await sender.Send(new GetMovieQuery(id));
 
-            return movie is null
-                ? (IResult)TypedResults.NotFound(new { Message = $"Movie with ID {id} not found." })
-                : TypedResults.Ok(movie);
+            return result.IsSuccess
+                ? TypedResults.Ok(result.Value)
+                : (IResult)TypedResults.NotFound(result.Error.Message);
         });
 
         movieApi.MapPut("/{id}", async (Guid id, UpdateMovieRequest request, ISender sender) =>
@@ -46,15 +47,11 @@ public static class MovieEndpoints
                                                 request.ReleaseDate,
                                                 request.Rating);
 
-            try
-            {
-                await sender.Send(command);
-                return TypedResults.NoContent();
-            }
-            catch (ArgumentNullException)
-            {
-                return (IResult)TypedResults.NotFound(new { Message = $"Movie with ID {id} not found." });
-            }
+            var result = await sender.Send(command);
+
+            return result.IsSuccess
+                ? TypedResults.NoContent()
+                : (IResult)TypedResults.NotFound(result.Error.Message);
 
         });
 

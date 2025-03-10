@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MovieManagement.Web.Models;
+using MovieManagement.Domain.Core;
 
 namespace MovieManagement.Web.Persistence;
 
@@ -25,7 +25,7 @@ public class MovieDbContext(DbContextOptions<MovieDbContext> options) : DbContex
                     b => b.Title == "Sonic the Hedgehog 3",
                     cancellationToken: cancellationToken);
 
-                 if (sampleMovie == null)
+                 if (sampleMovie is null)
                  {
                      sampleMovie = Movie.Create("Sonic the Hedgehog 3",
                                                 "Fantasy",
@@ -39,7 +39,7 @@ public class MovieDbContext(DbContextOptions<MovieDbContext> options) : DbContex
              .UseSeeding((context, _) =>
              {
                  var sampleMovie = context.Set<Movie>().FirstOrDefault(b => b.Title == "Sonic the Hedgehog 3");
-                 if (sampleMovie == null)
+                 if (sampleMovie is null)
                  {
                      sampleMovie = Movie.Create("Sonic the Hedgehog 3",
                                                 "Fantasy",

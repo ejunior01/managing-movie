@@ -1,14 +1,17 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MovieManagement.Domain.Core.Errors;
+using MovieManagement.Domain.Core.Primitives;
 using MovieManagement.Web.Features.Movies.DTOs;
 using MovieManagement.Web.Persistence;
 
 namespace MovieManagement.Web.Features.Movies.Queries.Get;
 
 public sealed class GetMovieQueryHandler(MovieDbContext dbContext) :
-    IRequestHandler<GetMovieQuery, MovieDto?>
+    IRequestHandler<GetMovieQuery, Result<MovieDto>>
 {
-    public async Task<MovieDto?> Handle(GetMovieQuery request, CancellationToken cancellationToken)
+    public async Task<Result<MovieDto>> Handle(GetMovieQuery request,
+        CancellationToken cancellationToken)
     {
         var movie = await dbContext
                         .Movies
@@ -16,12 +19,15 @@ public sealed class GetMovieQueryHandler(MovieDbContext dbContext) :
                         .FirstOrDefaultAsync(m => m.Id == request.Id,
             cancellationToken: cancellationToken);
 
-        if (movie == null)
+        if (movie is null)
         {
-            return null;
+            return Result.Failure<MovieDto>(DomainErrors.Movie.NotFound);
         }
 
-        return new MovieDto(movie.Id, movie.Title, movie.Genre, movie.ReleaseDate, movie.Rating);
+
+        var movieDto = new MovieDto(movie.Id, movie.Title, movie.Genre, movie.ReleaseDate, movie.Rating);
+
+        return Result.Success(movieDto);
 
     }
 }

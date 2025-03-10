@@ -1,4 +1,8 @@
-namespace MovieManagement.Web.Models;
+using MovieManagement.Domain.Core.Exceptions;
+using MovieManagement.Domain.Core.Primitives;
+
+
+namespace MovieManagement.Domain.Core;
 
 public sealed class Movie : EntityBase
 {
@@ -23,14 +27,15 @@ public sealed class Movie : EntityBase
     }
 
     public static Movie Create(string title, string genre, DateTimeOffset releaseDate, double rating)
-    {   
+    {
         ValidateInputs(title, genre, releaseDate, rating);
 
         return new Movie(title, genre, releaseDate, rating);
     }
 
 
-    public void Update(string title, string genre, DateTimeOffset releaseDate, double rating) {
+    public void Update(string title, string genre, DateTimeOffset releaseDate, double rating)
+    {
         ValidateInputs(title, genre, releaseDate, rating);
 
         Title = title;
@@ -44,15 +49,15 @@ public sealed class Movie : EntityBase
     public static void ValidateInputs(string title, string genre, DateTimeOffset releaseDate, double rating)
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentException("Title cannot be null or empty.", nameof(title));
+            throw new DomainException(new Error("InvalidTitle", "Title cannot be null or empty."));
 
         if (string.IsNullOrWhiteSpace(genre))
-            throw new ArgumentException("Genre cannot be null or empty.", nameof(genre));
+            throw new DomainException(new Error("InvalidGenre", "Genre cannot be null or empty."));
 
         if (releaseDate > DateTimeOffset.UtcNow)
-            throw new ArgumentException("Release date cannot be in the future.", nameof(releaseDate));
+            throw new DomainException(new Error("InvalidRelease", "Release date cannot be in the future."));
 
         if (rating < 0 || rating > 10)
-            throw new ArgumentException("Rating must be between 0 and 10.", nameof(rating));
+            throw new DomainException(new Error("InvalidRating", "Rating must be between 0 and 10."));
     }
 }
