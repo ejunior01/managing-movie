@@ -25,6 +25,7 @@ Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e
 - [x] Validação de entrada de dados
 - [ ] Paginação, classificação e filtragem
 - [x] CQRS
+- [x] Result Pattern
 
 ### Tecnologias e Bibliotecas utilizadas
 - ASP.NET Core 9: Framework moderno para desenvolvimento de aplicações web.
