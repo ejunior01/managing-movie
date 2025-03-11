@@ -8,9 +8,9 @@ using MovieManagement.Web.Persistence;
 namespace MovieManagement.Web.Features.Movies.Commands.Update;
 
 public sealed class UpdateMovieCommandHandler(MovieDbContext dbContext) :
-    IRequestHandler<UpdateMovieCommand,Result>
+    IRequestHandler<UpdateMovieCommand,Result<MovieDto>>
 {
-    public async Task<Result> Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
+    public async Task<Result<MovieDto>> Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
     {
         var movieToUpdate = await dbContext
                                     .Movies
@@ -26,6 +26,7 @@ public sealed class UpdateMovieCommandHandler(MovieDbContext dbContext) :
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        var movieDto = new MovieDto(movieToUpdate.Id, movieToUpdate.Title, movieToUpdate.Genre, movieToUpdate.ReleaseDate, movieToUpdate.Rating);
+        return Result.Success(movieDto);
     }
 }

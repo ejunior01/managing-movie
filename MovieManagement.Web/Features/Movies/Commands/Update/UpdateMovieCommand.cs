@@ -8,4 +8,4 @@ public record UpdateMovieCommand(Guid Id,
                                 string Title,
                                 string Genre,
                                 DateTimeOffset ReleaseDate,
-                                double Rating): IRequest<Result>;
+                                double Rating): IRequest<Result<MovieDto>>;
