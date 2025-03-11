@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using MovieManagement.Web.Features.Movies.Commands.Create;
 using MovieManagement.Web.Features.Movies.Commands.Delete;
 using MovieManagement.Web.Features.Movies.Commands.Update;
@@ -23,10 +24,11 @@ public static class MovieEndpoints
             return TypedResults.Created($"/api/movies/{result.Value.Id}", result.Value);
         });
 
-        movieApi.MapGet("/", async (ISender sender) =>
+        movieApi.MapGet("/", async (ISender sender, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) =>
         {
-            var result = await sender.Send(new ListMoviesQuery());
-            return TypedResults.Ok(result.Value);
+            var query = new ListMoviesQuery(page, pageSize);
+            var result = await sender.Send(query);
+            return TypedResults.Ok(result);
         });
 
         movieApi.MapGet("/{id}", async (Guid id, ISender sender) =>
