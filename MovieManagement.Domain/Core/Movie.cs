@@ -20,8 +20,8 @@ public sealed class Movie : EntityBase
 
     private Movie(string title, string genre, DateTimeOffset releaseDate, double rating)
     {
-        Title = title;
-        Genre = genre;
+        Title = title.Trim();
+        Genre = genre.Trim();
         ReleaseDate = releaseDate;
         Rating = rating;
     }
