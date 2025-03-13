@@ -8,7 +8,7 @@ using MovieManagement.Web.Persistence;
 namespace MovieManagement.Web.Features.Movies.Commands.Update;
 
 public sealed class UpdateMovieCommandHandler(MovieDbContext dbContext) :
-    IRequestHandler<UpdateMovieCommand,Result<MovieDto>>
+    IRequestHandler<UpdateMovieCommand, Result<MovieDto>>
 {
     public async Task<Result<MovieDto>> Handle(UpdateMovieCommand command, CancellationToken cancellationToken)
     {

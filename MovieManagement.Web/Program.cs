@@ -1,5 +1,4 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieManagement.Web.Behaviors;
 using MovieManagement.Web.Endpoints;
@@ -8,8 +7,6 @@ using MovieManagement.Web.Persistence;
 using Scalar.AspNetCore;
 using Serilog;
 using System.Reflection;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();

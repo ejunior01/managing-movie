@@ -18,16 +18,18 @@ public class ListMoviesQueryValidator : AbstractValidator<ListMoviesQuery>
         RuleFor(x => x.MaxRating)
             .InclusiveBetween(0, 10);
 
-        When(x => x.ReleaseDateTo.HasValue, () => {
+        When(x => x.ReleaseDateTo.HasValue, () =>
+        {
             RuleFor(x => x.ReleaseDateFrom)
-            .LessThan( x => x.ReleaseDateTo);
-        }).Otherwise(() => {
+            .LessThan(x => x.ReleaseDateTo);
+        }).Otherwise(() =>
+        {
             RuleFor(x => x.ReleaseDateFrom)
              .LessThanOrEqualTo(DateTimeOffset.UtcNow);
         });
 
         RuleFor(x => x.ReleaseDateTo)
-            .LessThanOrEqualTo(DateTimeOffset.UtcNow); 
+            .LessThanOrEqualTo(DateTimeOffset.UtcNow);
 
         RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
         RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);

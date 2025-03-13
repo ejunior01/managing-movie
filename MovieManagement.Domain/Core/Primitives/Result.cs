@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MovieManagement.Domain.Core.Primitives;
+﻿namespace MovieManagement.Domain.Core.Primitives;
 
 
 public class Result
