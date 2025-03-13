@@ -11,5 +11,7 @@ public record ListMoviesQuery(
     double? MaxRating,
     DateTimeOffset? ReleaseDateFrom,
     DateTimeOffset? ReleaseDateTo,
+    string? SortColumn,
+    string? SortOrder,
     int Page = 1,
     int PageSize = 10) : IRequest<PagedList<MovieDto>>;

@@ -32,10 +32,22 @@ public static class MovieEndpoints
             [FromQuery] double? maxRating,
             [FromQuery] DateTimeOffset? releaseDateFrom,
             [FromQuery] DateTimeOffset? releaseDateTo,
+            [FromQuery] string? sortColumn,
+            [FromQuery] string? sortOrder,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10) =>
         {
-            var query = new ListMoviesQuery(title, genre,minRating,maxRating,releaseDateFrom,releaseDateTo,page,pageSize);
+            var query = new ListMoviesQuery(title,
+                                            genre,
+                                            minRating,
+                                            maxRating,
+                                            releaseDateFrom,
+                                            releaseDateTo,
+                                            sortColumn,
+                                            sortOrder,
+                                            page,
+                                            pageSize);
+
             var result = await sender.Send(query);
             return TypedResults.Ok(result);
         });
