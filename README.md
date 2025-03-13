@@ -10,7 +10,7 @@
 
 ### Sobre o projeto
 
-Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e Entity Framework Core, seguindo práticas recomendadas de Design Orientado a Domínio (DDD) e Clean Code. A aplicação realiza operações CRUD (Criar, Ler, Atualizar, Deletar) para gerenciar detalhes de filmes. Utilizando os conceitos abordados no site: [codewithmukesh.com](https://codewithmukesh.com/blog/aspnet-core-webapi-crud-with-entity-framework-core-full-course/#what-we-will-build).
+Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e Entity Framework Core. A aplicação realiza operações CRUD (Criar, Ler, Atualizar, Deletar) para gerenciar detalhes de filmes. Utilizando os conceitos abordados no site: [codewithmukesh.com](https://codewithmukesh.com/blog/aspnet-core-webapi-crud-with-entity-framework-core-full-course/#what-we-will-build).
 
 ### Features
    - Filme
