@@ -24,9 +24,18 @@ public static class MovieEndpoints
             return TypedResults.Created($"/api/movies/{result.Value.Id}", result.Value);
         });
 
-        movieApi.MapGet("/", async (ISender sender, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) =>
+        movieApi.MapGet("/", async (
+            ISender sender,
+            [FromQuery] string? title,
+            [FromQuery] string? genre,
+            [FromQuery] double? minRating,
+            [FromQuery] double? maxRating,
+            [FromQuery] DateTimeOffset? releaseDateFrom,
+            [FromQuery] DateTimeOffset? releaseDateTo,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10) =>
         {
-            var query = new ListMoviesQuery(page, pageSize);
+            var query = new ListMoviesQuery(title, genre,minRating,maxRating,releaseDateFrom,releaseDateTo,page,pageSize);
             var result = await sender.Send(query);
             return TypedResults.Ok(result);
         });

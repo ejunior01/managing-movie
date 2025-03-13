@@ -18,7 +18,36 @@ public sealed class ListMoviesQueryHandler(MovieDbContext dbContext) :
                         .AsNoTracking()
                         .AsQueryable();
 
+        if(!string.IsNullOrWhiteSpace(query.Title))
+        {
+            moviesQuery = moviesQuery.Where(m => m.Title.Contains(query.Title));
+        }
 
+        if (!string.IsNullOrWhiteSpace(query.Genre))
+        {
+            moviesQuery = moviesQuery.Where(m => m.Genre.Contains(query.Genre));
+        }
+
+        if (query.MinRating.HasValue)
+        {
+            moviesQuery = moviesQuery.Where(m => m.Rating >= query.MinRating);
+        }
+
+        if (query.MaxRating.HasValue)
+        {
+            moviesQuery = moviesQuery.Where(m => m.Rating <= query.MaxRating);
+        }
+
+        if (query.ReleaseDateFrom.HasValue)
+        {
+            moviesQuery = moviesQuery.Where(m => m.ReleaseDate >= query.ReleaseDateFrom);
+        }
+
+        if (query.ReleaseDateTo.HasValue)
+        {
+            moviesQuery = moviesQuery.Where(m => m.ReleaseDate <= query.ReleaseDateTo);
+        }
+             
         var totalCount = await moviesQuery.CountAsync(cancellationToken: cancellationToken);
 
         var movies = await moviesQuery
