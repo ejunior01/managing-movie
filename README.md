@@ -40,12 +40,3 @@ Este projeto demonstra a construção de uma API Web utilizando ASP.NET Core 9 e
 - MediatR - Implementação do padrão Mediator para melhor organização de responsabilidades.
 - FluentValidation - Biblioteca .NET para validação de modelos, permitindo regras de validação expressivas e reutilizáveis.
 
-
-
-
-
-
-Licença
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
-
