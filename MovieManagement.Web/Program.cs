@@ -47,10 +47,17 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<MovieDbContext>();
+        dbContext.Database.EnsureCreated();
+    }
 }
 
 app.MapMovieEndpoints();

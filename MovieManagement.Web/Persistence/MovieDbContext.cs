@@ -21,34 +21,65 @@ public class MovieDbContext(DbContextOptions<MovieDbContext> options) : DbContex
         optionsBuilder
              .UseAsyncSeeding(async (context, _, cancellationToken) =>
              {
-                 var sampleMovie = await context.Set<Movie>().FirstOrDefaultAsync(
-                    b => b.Title == "Sonic the Hedgehog 3",
-                    cancellationToken: cancellationToken);
+                 var sampleMovies = new List<Movie> {
+                     Movie.Create("Robô Selvagem",
+                                                "Animação",
+                                                new DateTimeOffset(new DateTime(2024, 10, 14), TimeSpan.Zero),
+                                                8),
+                     Movie.Create("A Forja - O Poder da Transformação",
+                           "Drama",
+                           new DateTimeOffset(new DateTime(2024, 9, 26), TimeSpan.Zero),
+                           7.5),
 
-                 if (sampleMovie is null)
-                 {
-                     sampleMovie = Movie.Create("Sonic the Hedgehog 3",
-                                                "Fantasy",
-                                                new DateTimeOffset(new DateTime(2025, 1, 3), TimeSpan.Zero),
-                                                7);
+                     Movie.Create("Duna: Parte 2",
+                           "Ficção Científica",
+                           new DateTimeOffset(new DateTime(2024, 2, 29), TimeSpan.Zero),
+                           8.6),
+                     Movie.Create("Divertida Mente 2",
+                           "Animação",
+                           new DateTimeOffset(new DateTime(2024, 7, 20), TimeSpan.Zero),
+                           7.9)
+                     ,
+                     Movie.Create("Capitão América: Admirável Mundo Novo\r\n",
+                           "Ficção científica",
+                           new DateTimeOffset(new DateTime(2025, 2, 14), TimeSpan.Zero),
+                           7.9)
 
-                     await context.Set<Movie>().AddAsync(sampleMovie, cancellationToken);
-                     await context.SaveChangesAsync(cancellationToken);
-                 }
+                     };
+
+                 await context.Set<Movie>().AddRangeAsync(sampleMovies, cancellationToken);
+                 await context.SaveChangesAsync(cancellationToken);
              })
              .UseSeeding((context, _) =>
              {
-                 var sampleMovie = context.Set<Movie>().FirstOrDefault(b => b.Title == "Sonic the Hedgehog 3");
-                 if (sampleMovie is null)
-                 {
-                     sampleMovie = Movie.Create("Sonic the Hedgehog 3",
-                                                "Fantasy",
-                                                new DateTimeOffset(new DateTime(2025, 1, 3), TimeSpan.Zero),
-                                                7);
-                                                
-                     context.Set<Movie>().Add(sampleMovie);
-                     context.SaveChanges();
-                 }
+                 var sampleMovies = new List<Movie> {
+                     Movie.Create("Robô Selvagem",
+                                                "Animação",
+                                                new DateTimeOffset(new DateTime(2024, 10, 14), TimeSpan.Zero),
+                                                8),
+                     Movie.Create("A Forja - O Poder da Transformação",
+                           "Drama",
+                           new DateTimeOffset(new DateTime(2024, 9, 26), TimeSpan.Zero),
+                           7.5),
+
+                     Movie.Create("Duna: Parte 2",
+                           "Ficção Científica",
+                           new DateTimeOffset(new DateTime(2024, 2, 29), TimeSpan.Zero),
+                           8.6),
+                     Movie.Create("Divertida Mente 2",
+                           "Animação",
+                           new DateTimeOffset(new DateTime(2024, 7, 20), TimeSpan.Zero),
+                           7.9)
+                     ,
+                     Movie.Create("Capitão América: Admirável Mundo Novo\r\n",
+                           "Ficção científica",
+                           new DateTimeOffset(new DateTime(2025, 2, 14), TimeSpan.Zero),
+                           7.9)
+
+                     };
+
+                 context.Set<Movie>().AddRange(sampleMovies);
+                 context.SaveChanges();
              });
     }
 }
